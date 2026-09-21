@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Player Portfolio</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Theme Variables - Default: Cyber Neon (#00f0ff) */
+            --bg-base: #090912;
+            --bg-panel: #121225;
+            --bg-card: #1a1a38;
+            --primary: #00f0ff;
+            --primary-glow: rgba(0, 240, 255, 0.4);
+            --primary-dim: rgba(0, 240, 255, 0.15);
+            --secondary: #ff007f;
+            --text-main: #e0f7fc;
+            --text-muted: #7899b0;
+            --border-color: rgba(0, 240, 255, 0.25);
+            --font-display: 'Orbitron', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+            --font-code: 'Fira Code', monospace;
+        }
+
+        /* Color Preset Classes */
+        body.theme-neon {
+            --bg-base: #090912;
+            --bg-panel: #121225;
+            --bg-card: #1a1a38;
+            --primary: #00f0ff;
+            --primary-glow: rgba(0, 240, 255, 0.4);
+            --primary-dim: rgba(0, 240, 255, 0.15);
+            --secondary: #ff007f;
+            --text-main: #e0f7fc;
+            --text-muted: #7899b0;
+            --border-color: rgba(0, 240, 255, 0.25);
+        }
+
+        body.theme-matrix {
+            --bg-base: #0c0f0d;
+            --bg-panel: #131814;
+            --bg-card: #19201a;
+            --primary: #8FA876;
+            --primary-glow: rgba(143, 168, 118, 0.3);
+            --primary-dim: rgba(143, 168, 118, 0.12);
+            --secondary: #6B8554;
+            --text-main: #d4ded0;
+            --text-muted: #7d8f76;
+            --border-color: rgba(143, 168, 118, 0.2);
+        }
+
+        body.theme-gold {
+            --bg-base: #120e09;
+            --bg-panel: #1c1710;
+            --bg-card: #282118;
+            --primary: #ffb703;
+            --primary-glow: rgba(255, 183, 3, 0.4);
+            --primary-dim: rgba(255, 183, 3, 0.15);
+            --secondary: #fb8500;
+            --text-main: #fdf0d5;
+            --text-muted: #a08b70;
+            --border-color: rgba(255, 183, 3, 0.25);
+        }
+
+        body.theme-purple {
+            --bg-base: #0e0a14;
+            --bg-panel: #171124;
+            --bg-card: #221835;
+            --primary: #bd00ff;
+            --primary-glow: rgba(189, 0, 255, 0.4);
+            --primary-dim: rgba(189, 0, 255, 0.15);
+            --secondary: #7209b7;
+            --text-main: #f3e8ff;
+            --text-muted: #9d8abf;
+            --border-color: rgba(189, 0, 255, 0.25);
+        }
+
+        body.theme-white {
+            --bg-base: #050505;
+            --bg-panel: #0e0e0e;
+            --bg-card: #161616;
+            --primary: #ffffff;
+            --primary-glow: rgba(255, 255, 255, 0.3);
+            --primary-dim: rgba(255, 255, 255, 0.1);
+            --secondary: #888888;
+            --text-main: #f0f0f0;
+            --text-muted: #777777;
+            --border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 16px;
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        /* Intro Cassette Animation Overlay */
+        .intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--bg-base);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .intro-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Track Transition Cassette Overlay */
+        .track-transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(9, 9, 18, 0.92);
+            backdrop-filter: blur(8px);
+            z-index: 9998;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .track-transition-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .intro-deck-housing {
+            background: linear-gradient(145deg, var(--bg-panel), var(--bg-base));
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8), 0 0 20px var(--primary-glow);
+            position: relative;
+        }
+
+        .intro-lcd {
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            color: var(--primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-align: center;
+            min-height: 24px;
+        }
+
+        .intro-deck-btns {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .deck-btn {
+            background: var(--primary-dim);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 10px 22px;
+            border-radius: 6px;
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .deck-btn:hover {
+            background: var(--primary);
+            color: var(--bg-base);
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        /* App Container & Landing Page Fade-In Entrance Animation */
+        .app-container {
+            display: flex;
+            width: 100vw;
+            min-height: 100vh;
+            opacity: 0;
+            transform: scale(0.98) translateY(10px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+        }
+
+        .app-container.fade-in {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Sidebar Navigation Deck */
+        .sidebar-deck {
+            width: 280px;
+            background-color: var(--bg-panel);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px 15px;
+            z-index: 100;
+            flex-shrink: 0;
+            transition: border-color 0.4s ease;
+        }
+
+        .brand-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-base);
+            font-size: 1.3rem;
+            box-shadow: 0 0 12px var(--primary-glow);
+        }
+
+        .brand-text h1 {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: var(--text-main);
+        }
+
+        .brand-text p {
+            font-size: 0.75rem;
+            color: var(--primary);
+            font-family: var(--font-code);
+            text-transform: uppercase;
+        }
+
+        /* Track Menu List */
+        .nav-menu {
+            list-style: none;
+            margin: 25px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            background-color: transparent;
+            transition: all 0.25s ease;
+            gap: 12px;
+        }
+
+        .nav-item:hover {
+            background-color: var(--primary-dim);
+            border-color: var(--border-color);
+            transform: translateX(4px);
+        }
+
+        .nav-item.active {
+            background-color: var(--primary-dim);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .nav-item .track-num {
+            font-family: var(--font-code);
+            font-size: 0.72rem;
+            color: var(--primary);
+            font-weight: 600;
+            white-space: nowrap;
+            line-height: 1.2;
+        }
+
+        .nav-item .track-label {
+            font-family: var(--font-display);
+            font-size: 0.82rem;
+            letter-spacing: 0.3px;
+            color: var(--text-main);
+            flex-grow: 1;
+            line-height: 1.25;
+        }
+
+        .nav-item.active .track-label {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .nav-item i {
+            font-size: 1rem;
+            color: var(--text-muted);
+            transition: color 0.2s ease;
+        }
+
+        .nav-item.active i, .nav-item:hover i {
+            color: var(--primary);
+        }
+
+        /* Sidebar Hardware Controls */
+        .sidebar-controls {
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .theme-selector-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .control-title {
+            font-family: var(--font-code);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .theme-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .theme-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .theme-btn.active {
+            border-color: var(--text-main);
+            box-shadow: 0 0 8px currentColor;
+        }
+
+        .btn-neon { background-color: #00f0ff; color: #00f0ff; }
+        .btn-matrix { background-color: #8FA876; color: #8FA876; }
+        .btn-gold { background-color: #ffb703; color: #ffb703; }
+        .btn-purple { background-color: #bd00ff; color: #bd00ff; }
+        .btn-white { background-color: #ffffff; color: #ffffff; }
+
+        .mini-vu-meter {
+            display: flex;
+            gap: 3px;
+            height: 12px;
+            align-items: flex-end;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 3px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .vu-bar {
+            flex: 1;
+            background-color: var(--primary);
+            opacity: 0.3;
+            height: 20%;
+            border-radius: 1px;
+            transition: height 0.1s ease, opacity 0.1s ease;
+        }
+
+        /* Main Content Viewport */
+        .main-viewport {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+            background: radial-gradient(circle at top right, var(--bg-panel), var(--bg-base));
+        }
+
+        /* Top Display Bar */
+        .top-display-bar {
+            padding: 15px 30px;
+            background-color: rgba(18, 18, 37, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .lcd-screen {
+            background-color: #05050b;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .lcd-status {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            box-shadow: 0 0 8px var(--primary);
+            animation: pulse-led 1.5s infinite alternate;
+        }
+
+        @keyframes pulse-led {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        .lcd-text {
+            font-family: var(--font-code);
+            font-size: 0.85rem;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        .global-audio-btn {
+            background: var(--primary-dim);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-family: var(--font-display);
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+        }
+
+        .global-audio-btn:hover {
+            background: var(--primary);
+            color: var(--bg-base);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* Page Track Views */
+        .page-track {
+            display: none;
+            padding: 35px 40px;
+            animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-track.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .track-header {
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .track-header h2 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--primary);
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .track-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* TRK 01: About Me Styles */
+        .about-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cassette-sleeve {
+            background: linear-gradient(145deg, #15152b, #0d0d1a);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            text-align: center;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .profile-pic {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            object-fit: cover;
+            background-color: var(--bg-base);
+            box-shadow: 0 0 20px var(--primary-glow);
+            margin-bottom: 15px;
+        }
+
+        .about-bio h3 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+        }
+
+        .about-bio p {
+            line-height: 1.6;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+            opacity: 0.9;
+        }
+
+        .bio-highlights {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .highlight-item {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .highlight-item h4 {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .highlight-item p {
+            font-size: 0.95rem;
+            margin-bottom: 0;
+            color: var(--text-main);
+        }
+
+        /* TRK 02: Player & Visualizer */
+        .player-console {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 25px;
+        }
+
+        .visualizer-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .canvas-container {
+            width: 100%;
+            height: 320px;
+            background-color: #05050b;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        canvas#specCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .vis-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .vis-mode-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .vis-btn {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .vis-btn.active, .vis-btn:hover {
+            background: var(--primary);
+            color: var(--bg-base);
+        }
+
+        /* Cassette Tape Deck Components */
+        .turntable-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .cassette-tape {
+            width: 270px;
+            height: 170px;
+            background: linear-gradient(135deg, #181830, #0a0a16);
+            border: 3px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7), inset 0 0 10px rgba(255, 255, 255, 0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            transition: border-color 0.4s ease;
+        }
+
+        .cassette-sticker {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px;
+            height: 95px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cassette-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            color: var(--primary);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 4px;
+        }
+
+        .cassette-window {
+            background: #05050b;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cassette-spool {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #111;
+            border: 3px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 8px var(--primary-glow);
+        }
+
+        .cassette-spool.playing {
+            animation: spin-spool 2s linear infinite;
+        }
+
+        @keyframes spin-spool {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .spool-teeth {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spool-teeth::before, .spool-teeth::after {
+            content: '';
+            position: absolute;
+            background: var(--primary);
+        }
+
+        .spool-teeth::before {
+            width: 4px;
+            height: 100%;
+        }
+
+        .spool-teeth::after {
+            width: 100%;
+            height: 4px;
+        }
+
+        .spool-center {
+            width: 12px;
+            height: 12px;
+            background: var(--bg-base);
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .tape-bridge {
+            height: 6px;
+            background: #221c2a;
+            flex-grow: 0.6;
+            border-radius: 2px;
+            box-shadow: inset 0 0 3px #000;
+        }
+
+        .cassette-bottom {
+            height: 38px;
+            background: #0e0e1c;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .tape-hole {
+            width: 10px;
+            height: 10px;
+            background: #000;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* TRK 03: Expanded Vertical Equalizer Page */
+        .page-track#page-3 {
+            max-width: 100%;
+            padding: 35px 50px;
+        }
+
+        .eq-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .eq-channels-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: linear-gradient(135deg, #070712 0%, var(--bg-panel) 100%);
+            padding: 50px 30px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8);
+            gap: 20px;
+            min-height: 420px;
+        }
+
+        .eq-channel-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+            max-width: 120px;
+            height: 100%;
+        }
+
+        .eq-label {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--text-main);
+            letter-spacing: 1.5px;
+            text-align: center;
+        }
+
+        .eq-slider-wrapper {
+            height: 260px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 10px 0;
+        }
+
+        .eq-slider {
+            writing-mode: vertical-lr;
+            direction: rtl;
+            width: 12px;
+            height: 240px;
+            background: var(--bg-base);
+            border-radius: 6px;
+            outline: none;
+            border: 1px solid var(--border-color);
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.8), 0 0 8px var(--primary-glow);
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        .eq-value {
+            font-family: var(--font-code);
+            font-size: 1.05rem;
+            color: var(--primary);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .eq-controls-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .btn-reset-eq {
+            background: var(--primary-dim);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn-reset-eq:hover {
+            background: var(--primary);
+            color: var(--bg-base);
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .btn-update-eq {
+            background: var(--primary);
+            border: 1px solid var(--primary);
+            color: var(--bg-base);
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .btn-update-eq:hover {
+            box-shadow: 0 0 15px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        /* TRK 04: Projects Grid (Expanded & Filled Layout) */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 280px;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--primary);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), 0 0 15px var(--primary-glow);
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-badge {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            color: var(--primary);
+            background: var(--primary-dim);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            letter-spacing: 1px;
+        }
+
+        .project-meta i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .project-title {
+            font-family: var(--font-display);
+            font-size: 1.45rem;
+            color: var(--text-main);
+            letter-spacing: 1px;
+        }
+
+        .project-desc {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+        }
+
+        .tag {
+            font-family: var(--font-code);
+            font-size: 0.75rem;
+            color: var(--text-main);
+            background: var(--bg-panel);
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            opacity: 0.9;
+        }
+
+        /* TRK 05: Languages Soundboard */
+        .soundboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .sound-pad {
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            min-height: 210px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .sound-pad:hover {
+            border-color: var(--primary);
+            background-color: var(--primary-dim);
+            transform: scale(1.02);
+            box-shadow: 0 0 25px var(--primary-glow);
+        }
+
+        .sound-pad:active, .sound-pad.playing {
+            transform: scale(0.97);
+            border-color: var(--primary);
+            background-color: var(--primary);
+            box-shadow: 0 0 35px var(--primary-glow);
+        }
+
+        .sound-pad:active .pad-title, .sound-pad.playing .pad-title,
+        .sound-pad:active .pad-sub, .sound-pad.playing .pad-sub,
+        .sound-pad:active i, .sound-pad.playing i {
+            color: var(--bg-base);
+        }
+
+        .sound-pad i {
+            font-size: 3.5rem;
+            color: var(--primary);
+            transition: color 0.15s ease;
+        }
+
+        .pad-title {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            color: var(--text-main);
+            letter-spacing: 1.5px;
+            transition: color 0.15s ease;
+            text-align: center;
+        }
+
+        .pad-sub {
+            font-family: var(--font-code);
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            transition: color 0.15s ease;
+            text-align: center;
+        }
+
+        /* TRK 06: Contact Form */
+        .contact-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-family: var(--font-code);
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-transform: uppercase;
+        }
+
+        .form-control {
+            background-color: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px 15px;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.25s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px var(--primary-dim);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn-submit {
+            background: var(--primary);
+            color: var(--bg-base);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.25s ease;
+        }
+
+        .btn-submit:hover {
+            box-shadow: 0 0 20px var(--primary-glow);
+            transform: translateY(-2deg);
+        }
+
+        /* Responsive Layout Adjustments */
+        @media (max-width: 900px) {
+            .app-container {
+                flex-direction: column;
+            }
+
+            .sidebar-deck {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .about-card {
+                grid-template-columns: 1fr;
+            }
+
+            .player-console {
+                grid-template-columns: 1fr;
+            }
+
+            .eq-channels-container {
+                flex-wrap: wrap;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .soundboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-link-btn {
+            background: transparent;
+            border: 1px solid var(--panel-border);
+            color: var(--text-main);
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            }
+
+            .project-link-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+            border-color: var(--accent-cyan);
+            }
+
+        }
+    </style>
+</head>
+<body class="theme-neon">
+
+    <!-- Linked Background Audio Element -->
+    <audio id="bgMusic" src="Synthesis.mp3" preload="auto" crossorigin="anonymous" loop></audio>
+
+    <!-- Intro Cassette Player Animation Overlay -->
+    <div class="intro-overlay" id="introOverlay">
+        <div class="intro-deck-housing">
+            <div class="intro-lcd" id="introLcdText">SYSTEM READY // INSERT CASSETTE</div>
+            <!-- Cassette Tape Graphic -->
+            <div class="cassette-tape">
+                <div class="cassette-sticker">
+                    <div class="cassette-header">
+                        <span>SYS-BOOT</span>
+                        <span>HI-FI PORTFOLIO</span>
+                    </div>
+                    <div class="cassette-window">
+                        <div class="cassette-spool" id="introSpoolLeft">
+                            <div class="spool-teeth"></div>
+                            <div class="spool-center"></div>
+                        </div>
+                        <div class="tape-bridge"></div>
+                        <div class="cassette-spool" id="introSpoolRight">
+                            <div class="spool-teeth"></div>
+                            <div class="spool-center"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cassette-bottom">
+                    <div class="tape-hole"></div>
+                    <div class="tape-hole"></div>
+                    <div class="tape-hole"></div>
+                </div>
+            </div>
+            <div class="intro-deck-btns">
+                <button class="deck-btn" id="btnIntroPlay" onclick="startIntroSequence()">
+                    <i class="fa-solid fa-play"></i>
+                    <span>PLAY TAPE</span>
+                </button>
+                <button class="deck-btn" onclick="skipIntro()">
+                    <i class="fa-solid fa-forward-step"></i>
+                    <span>SKIP INTRO</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Track Transition Cassette Player Overlay -->
+    <div class="track-transition-overlay" id="trackTransitionOverlay">
+        <div class="intro-deck-housing">
+            <div class="intro-lcd" id="transitionLcdText">LOADING TRACK...</div>
+            <div class="cassette-tape">
+                <div class="cassette-sticker">
+                    <div class="cassette-header">
+                        <span id="transitionSideLabel">TRK DECK</span>
+                        <span>HI-FI PORTFOLIO</span>
+                    </div>
+                    <div class="cassette-window">
+                        <div class="cassette-spool playing">
+                            <div class="spool-teeth"></div>
+                            <div class="spool-center"></div>
+                        </div>
+                        <div class="tape-bridge"></div>
+                        <div class="cassette-spool playing">
+                            <div class="spool-teeth"></div>
+                            <div class="spool-center"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cassette-bottom">
+                    <div class="tape-hole"></div>
+                    <div class="tape-hole"></div>
+                    <div class="tape-hole"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="app-container" id="appContainer">
+        <!-- Sidebar Navigation Rack Deck -->
+        <aside class="sidebar-deck">
+            <div>
+                <div class="brand-header">
+                    <div class="brand-logo">
+                        <i class="fa-solid fa-tape"></i>
+                    </div>
+                    <div class="brand-text">
+                        <h1>AUDIO PORTFOLIO</h1>
+                        <p>SYSTEM DECK V3.0</p>
+                    </div>
+                </div>
+
+                <ul class="nav-menu">
+                    <li class="nav-item active" onclick="switchTrack('page-1')">
+                        <span class="track-num">TRK 01</span>
+                        <span class="track-label">About Me</span>
+                        <i class="fa-solid fa-user-astronaut"></i>
+                    </li>
+                    <li class="nav-item" onclick="switchTrack('page-2')">
+                        <span class="track-num">TRK 02</span>
+                        <span class="track-label">Player & Visualizer</span>
+                        <i class="fa-solid fa-sliders"></i>
+                    </li>
+                    <li class="nav-item" onclick="switchTrack('page-3')">
+                        <span class="track-num">TRK 03</span>
+                        <span class="track-label">Equalizer</span>
+                        <i class="fa-solid fa-wave-square"></i>
+                    </li>
+                    <li class="nav-item" onclick="switchTrack('page-4')">
+                        <span class="track-num">TRK 04</span>
+                        <span class="track-label">Projects</span>
+                        <i class="fa-solid fa-folder-open"></i>
+                    </li>
+                    <li class="nav-item" onclick="switchTrack('page-5')">
+                        <span class="track-num">TRK 05</span>
+                        <span class="track-label">Languages</span>
+                        <i class="fa-solid fa-code"></i>
+                    </li>
+                    <li class="nav-item" onclick="switchTrack('page-6')">
+                        <span class="track-num">TRK 06</span>
+                        <span class="track-label">Contact</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="sidebar-controls">
+                <div class="theme-selector-group">
+                    <span class="control-title">Color Preset</span>
+                    <div class="theme-buttons">
+                        <div class="theme-btn btn-neon active" onclick="setTheme('theme-neon')" title="Cyber Neon"></div>
+                        <div class="theme-btn btn-matrix" onclick="setTheme('theme-matrix')" title="Muted Green"></div>
+                        <div class="theme-btn btn-gold" onclick="setTheme('theme-gold')" title="Synth Gold"></div>
+                        <div class="theme-btn btn-purple" onclick="setTheme('theme-purple')" title="Cyber Purple"></div>
+                        <div class="theme-btn btn-white" onclick="setTheme('theme-white')" title="White"></div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="control-title" style="margin-bottom: 6px; display: block;">Master Level</span>
+                    <div class="mini-vu-meter">
+                        <div class="vu-bar" id="vu1"></div>
+                        <div class="vu-bar" id="vu2"></div>
+                        <div class="vu-bar" id="vu3"></div>
+                        <div class="vu-bar" id="vu4"></div>
+                        <div class="vu-bar" id="vu5"></div>
+                        <div class="vu-bar" id="vu6"></div>
+                        <div class="vu-bar" id="vu7"></div>
+                        <div class="vu-bar" id="vu8"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Viewport -->
+        <main class="main-viewport">
+            <!-- Top Status Display Bar -->
+            <div class="top-display-bar">
+                <div class="lcd-screen">
+                    <div class="lcd-status"></div>
+                    <div class="lcd-text" id="lcdTrackText">TRK 01 // ABOUT ME LOADED</div>
+                </div>
+
+                <button class="global-audio-btn" id="btnAudioToggle" onclick="toggleGlobalAudio()">
+                    <i class="fa-solid fa-play"></i>
+                    <span>PLAY SYNTH</span>
+                </button>
+            </div>
+
+            <!-- TRK 01: ABOUT ME -->
+            <section id="page-1" class="page-track active">
+                <div class="track-header">
+                    <h2>TRK 01 // ABOUT ME</h2>
+                    <p>University of San Carlos - Talamban Campus; BSIT student</p>
+                </div>
+
+                <div class="about-card">
+                    <div class="cassette-sleeve">
+                        <!-- Profile Picture -->
+                        <img src="IMG_5175.png" alt="Profile Picture" class="profile-pic">
+                        <div>
+                            <h3 style="font-family: var(--font-display); font-size: 1.1rem; color: var(--primary);">Keith Alunan</h3>
+                            <p style="font-family: var(--font-code); font-size: 0.8rem; color: var(--text-muted);">Student of Miss Enriquez</p>
+                        </div>
+                    </div>
+
+                    <div class="about-bio">
+                        <h3>Hi, I'm Keith!</h3>
+                        <p>Welcome to my interactive Hi-Fi audio portfolio. I am passionate about learning software related problems that solves real-world issues, tinkering in anything related to hardware, and as a lifelong learner, I love diving into new technologies and collaborating on team projects.</p>
+                        
+                        <div class="bio-highlights" id="track1Highlights">
+                            <div class="highlight-item">
+                                <h4>Primary Focus</h4>
+                                <p>C Systems & Kernel Dev (45%)</p>
+                            </div>
+                            <div class="highlight-item">
+                                <h4>Web Stack</h4>
+                                <p>JS, HTML5 & CSS3 (50%)</p>
+                            </div>
+                            <div class="highlight-item">
+                                <h4>Automation</h4>
+                                <p>Python Tools & Scripts (5%)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TRK 02: PLAYER & VISUALIZER -->
+            <section id="page-2" class="page-track">
+                <div class="track-header">
+                    <h2>TRK 02 // PLAYER & VISUALIZER</h2>
+                    <p>Real-Time Web Audio API Stream & Canvas Audio Engine</p>
+                </div>
+
+                <div class="player-console">
+                    <div class="visualizer-card">
+                        <div class="canvas-container">
+                            <canvas id="specCanvas"></canvas>
+                        </div>
+                        <div class="vis-controls">
+                            <span class="control-title">VISUALIZER MODE</span>
+                            <div class="vis-mode-buttons">
+                                <button class="vis-btn active" onclick="setVisMode('bars')">SPECTRUM BARS</button>
+                                <button class="vis-btn" onclick="setVisMode('wave')">OSCILLOSCOPE</button>
+                                <button class="vis-btn" onclick="setVisMode('radial')">RADIAL PULSE</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="turntable-card">
+                        <!-- Cassette Tape Display -->
+                        <div class="cassette-tape">
+                            <div class="cassette-sticker">
+                                <div class="cassette-header">
+                                    <span>SIDE A</span>
+                                    <span>STREAM DECK</span>
+                                </div>
+                                <div class="cassette-window">
+                                    <div class="cassette-spool" id="spoolLeft">
+                                        <div class="spool-teeth"></div>
+                                        <div class="spool-center"></div>
+                                    </div>
+                                    <div class="tape-bridge"></div>
+                                    <div class="cassette-spool" id="spoolRight">
+                                        <div class="spool-teeth"></div>
+                                        <div class="spool-center"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cassette-bottom">
+                                <div class="tape-hole"></div>
+                                <div class="tape-hole"></div>
+                                <div class="tape-hole"></div>
+                            </div>
+                        </div>
+                        <h4 style="font-family: var(--font-display); color: var(--primary); margin-bottom: 5px;">LINKED AUDIO STREAM</h4>
+                        <p style="font-family: var(--font-code); font-size: 0.8rem; color: var(--text-muted);">LIVE BUFFER // LINKED SOURCE</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TRK 03: EQUALIZER (VERTICAL MIXER) -->
+            <section id="page-3" class="page-track">
+                <div class="track-header">
+                    <h2>TRK 03 // EQUALIZER</h2>
+                    <p>5-Band Language Skill Frequency Vertical Mixer</p>
+                </div>
+
+                <div class="eq-panel">
+                    <div class="eq-channels-container">
+                        <!-- C Channel -->
+                        <div class="eq-channel-col">
+                            <span class="eq-label">C</span>
+                            <div class="eq-slider-wrapper">
+                                <input type="range" class="eq-slider" id="slide-c" min="0" max="100" value="45" oninput="updateEq('c', this.value)">
+                            </div>
+                            <span class="eq-value" id="val-c">45%</span>
+                        </div>
+
+                        <!-- JS Channel -->
+                        <div class="eq-channel-col">
+                            <span class="eq-label">JS</span>
+                            <div class="eq-slider-wrapper">
+                                <input type="range" class="eq-slider" id="slide-js" min="0" max="100" value="25" oninput="updateEq('js', this.value)">
+                            </div>
+                            <span class="eq-value" id="val-js">25%</span>
+                        </div>
+
+                        <!-- HTML Channel -->
+                        <div class="eq-channel-col">
+                            <span class="eq-label">HTML</span>
+                            <div class="eq-slider-wrapper">
+                                <input type="range" class="eq-slider" id="slide-html" min="0" max="100" value="15" oninput="updateEq('html', this.value)">
+                            </div>
+                            <span class="eq-value" id="val-html">15%</span>
+                        </div>
+
+                        <!-- CSS Channel -->
+                        <div class="eq-channel-col">
+                            <span class="eq-label">CSS</span>
+                            <div class="eq-slider-wrapper">
+                                <input type="range" class="eq-slider" id="slide-css" min="0" max="100" value="10" oninput="updateEq('css', this.value)">
+                            </div>
+                            <span class="eq-value" id="val-css">10%</span>
+                        </div>
+
+                        <!-- Python Channel -->
+                        <div class="eq-channel-col">
+                            <span class="eq-label">PYTHON</span>
+                            <div class="eq-slider-wrapper">
+                                <input type="range" class="eq-slider" id="slide-py" min="0" max="100" value="5" oninput="updateEq('py', this.value)">
+                            </div>
+                            <span class="eq-value" id="val-py">5%</span>
+                        </div>
+                    </div>
+
+                    <div class="eq-controls-row">
+                        <button class="btn-reset-eq" onclick="resetEqToZero()">RESET EQUALIZER</button>
+                        <button class="btn-update-eq" onclick="updateTrackOneInfo()">UPDATE PROFILE INFO</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TRK 04: PROJECTS -->
+            <section id="page-4" class="page-track">
+                <div class="track-header">
+                    <h2>TRK 04 // PROJECTS</h2>
+                    <p>Discography of Software, Systems & Interactive Applications</p>
+                </div>
+
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-meta">
+                            <span class="project-badge">MARKETPLACE</span>
+                            <a href="https://carolinianmarket.dcism.org/" target="_blank" class="project-link-btn" title="Open Carolinian Market">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                        <h3 class="project-title">Carolinian Market</h3>
+                        <p class="project-desc">A comprehensive web-based marketplace platform engineered specifically for University of San Carlos (USC) students to seamlessly buy, trade, and sell campus essentials within a secure student-verified community ecosystem.</p>
+                        <div class="project-tags">
+                            <span class="tag">Web Architecture</span>
+                            <span class="tag">USC Ecosystem</span>
+                            <span class="tag">E-Commerce</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-meta">
+                            <span class="project-badge">REAL ESTATE</span>
+                            <a href="https://ezpa.dcism.org/" target="_blank" class="project-link-btn" title="Open EzPA">
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+                        </div>
+                        <h3 class="project-title">EzPA (Easy Property Assistant)</h3>
+                        <p class="project-desc">An advanced real estate discovery and listing platform designed to empower tenants with intuitive property browsing, lease comparison metrics, and direct landlord communication tools for finding housing locations.</p>
+                        <div class="project-tags">
+                            <span class="tag">Property Portal</span>
+                            <span class="tag">Lease Management</span>
+                            <span class="tag">UI/UX Platform</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-meta">
+                            <span class="project-badge">MAPS & FUEL</span>
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <h3 class="project-title">Route 66</h3>
+                        <p class="project-desc">An immersive interactive map application providing live geospatial location tracking for nearby gas stations, route optimization guidance, and real-time fuel pricing updates for daily commuters.</p>
+                        <div class="project-tags">
+                            <span class="tag">Maps Integration</span>
+                            <span class="tag">Live Tracking</span>
+                            <span class="tag">Utility Software</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-meta">
+                            <span class="project-badge">RECOVERY</span>
+                            <i class="fa-solid fa-magnifying-glass-location"></i>
+                        </div>
+                        <h3 class="project-title">FoundIT</h3>
+                        <p class="project-desc">A centralized community-driven lost-and-found registry platform equipped with intelligent tagging, item matching algorithms, and automated verification workflows to help users securely recover misplaced belongings.</p>
+                        <div class="project-tags">
+                            <span class="tag">Community Tool</span>
+                            <span class="tag">Search Engine</span>
+                            <span class="tag">Recovery System</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TRK 05: LANGUAGES -->
+            <section id="page-5" class="page-track">
+                <div class="track-header">
+                    <h2>TRK 05 // LANGUAGES</h2>
+                    <p>Interactive Audio Sampler Soundboard Matrix</p>
+                </div>
+
+                <div class="soundboard-grid">
+                    <div class="sound-pad" onclick="triggerSound('c')">
+                        <i class="fa-solid fa-c"></i>
+                        <span class="pad-title">C PROGRAMMING</span>
+                        <span class="pad-sub">45% USE // LOW FREQ BASS</span>
+                    </div>
+
+                    <div class="sound-pad" onclick="triggerSound('js')">
+                        <i class="fa-brands fa-js"></i>
+                        <span class="pad-title">JAVASCRIPT</span>
+                        <span class="pad-sub">25% USE // SYNTH LEAD</span>
+                    </div>
+
+                    <div class="sound-pad" onclick="triggerSound('html')">
+                        <i class="fa-brands fa-html5"></i>
+                        <span class="pad-title">HTML5</span>
+                        <span class="pad-sub">15% USE // CHORD CHIME</span>
+                    </div>
+
+                    <div class="sound-pad" onclick="triggerSound('css')">
+                        <i class="fa-brands fa-css3-alt"></i>
+                        <span class="pad-title">CSS3</span>
+                        <span class="pad-sub">10% USE // SWEEP FILTER</span>
+                    </div>
+
+                    <div class="sound-pad" onclick="triggerSound('py')" style="grid-column: span 2;">
+                        <i class="fa-brands fa-python"></i>
+                        <span class="pad-title">PYTHON</span>
+                        <span class="pad-sub">5% USE // HIGH BEAT PULSE</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TRK 06: CONTACT -->
+            <section id="page-6" class="page-track">
+                <div class="track-header">
+                    <h2>TRK 06 // CONTACT TRANSMISSION</h2>
+                    <p>Send a Signal / Mix Tape Message Transmission</p>
+                </div>
+
+                <div class="contact-card">
+                    <form onsubmit="handleContactSubmit(event)">
+                        <div class="form-group">
+                            <label>Caller ID / Name</label>
+                            <input type="text" class="form-control" placeholder="Enter your name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Return Frequency / Email</label>
+                            <input type="email" class="form-control" placeholder="Enter your email address" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Signal Content / Message</label>
+                            <textarea class="form-control" placeholder="Type your message here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">TRANSMIT SIGNAL</button>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Web Audio API & Interactive Logic -->
+    <script>
+        // Track Display Map
+        const trackNames = {
+            'page-1': 'TRK 01 // ABOUT ME LOADED',
+            'page-2': 'TRK 02 // PLAYER & VISUALIZER ACTIVE',
+            'page-3': 'TRK 03 // 5-BAND EQUALIZER ONLINE',
+            'page-4': 'TRK 04 // PROJECT DISCOGRAPHY LOADED',
+            'page-5': 'TRK 05 // LANGUAGE SOUNDBOARD READY',
+            'page-6': 'TRK 06 // CONTACT TRANSMITTER READY'
+        };
+
+        const trackLabels = {
+            'page-1': 'TRK 01 // ABOUT ME',
+            'page-2': 'TRK 02 // PLAYER',
+            'page-3': 'TRK 03 // EQUALIZER',
+            'page-4': 'TRK 04 // PROJECTS',
+            'page-5': 'TRK 05 // LANGUAGES',
+            'page-6': 'TRK 06 // CONTACT'
+        };
+
+        let activeTrack = 'page-1';
+        let audioCtx = null;
+        let isAudioPlaying = false;
+        let audioSourceNode = null;
+        let visMode = 'bars';
+        let analyser = null;
+
+        // Intro Animation Sequence Logic
+        let introPlaying = false;
+        let introInterval = null;
+
+        function startIntroSequence() {
+            initAudio();
+            const leftSpool = document.getElementById('introSpoolLeft');
+            const rightSpool = document.getElementById('introSpoolRight');
+            const lcd = document.getElementById('introLcdText');
+            const playBtn = document.getElementById('btnIntroPlay');
+
+            if (introPlaying) return;
+            introPlaying = true;
+            playBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>BOOTING...</span>`;
+            if (leftSpool) leftSpool.classList.add('playing');
+            if (rightSpool) rightSpool.classList.add('playing');
+
+            lcd.innerText = "INITIALIZING TAPE MOTOR...";
+
+            let bootStep = 0;
+            const bootNotes = [220, 277.18, 329.63, 440, 554.37, 659.25];
+            introInterval = setInterval(() => {
+                if (audioCtx && bootStep < bootNotes.length) {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(bootNotes[bootStep], audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.15);
+                }
+                bootStep++;
+                if (bootStep === 3) {
+                    lcd.innerText = "LOADING PORTFOLIO FREQUENCIES...";
+                }
+            }, 200);
+
+            setTimeout(() => {
+                clearInterval(introInterval);
+                skipIntro();
+            }, 1400);
+        }
+
+        function skipIntro() {
+            clearInterval(introInterval);
+            const overlay = document.getElementById('introOverlay');
+            const appContainer = document.getElementById('appContainer');
+
+            if (overlay) {
+                overlay.classList.add('fade-out');
+            }
+            if (appContainer) {
+                appContainer.classList.add('fade-in');
+            }
+            playClickSound();
+        }
+
+        // Switch Page Tracks with Cassette Transition Animation
+        function switchTrack(pageId) {
+            if (activeTrack === pageId) return;
+
+            initAudio();
+            const overlay = document.getElementById('trackTransitionOverlay');
+            const lcd = document.getElementById('transitionLcdText');
+            const sideLabel = document.getElementById('transitionSideLabel');
+
+            if (lcd) lcd.innerText = `LOADING ${trackLabels[pageId] || 'NEW TRACK'}...`;
+            if (sideLabel) sideLabel.innerText = pageId.replace('page-', 'TRK ');
+            if (overlay) overlay.classList.add('active');
+
+            if (audioCtx) {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.3);
+            }
+
+            setTimeout(() => {
+                document.querySelectorAll('.page-track').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+                const targetPage = document.getElementById(pageId);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                }
+
+                const navIndex = parseInt(pageId.replace('page-', '')) - 1;
+                const navItems = document.querySelectorAll('.nav-item');
+                if (navItems[navIndex]) {
+                    navItems[navIndex].classList.add('active');
+                }
+
+                document.getElementById('lcdTrackText').innerText = trackNames[pageId] || 'SYSTEM ONLINE';
+                activeTrack = pageId;
+
+                if (overlay) overlay.classList.remove('active');
+            }, 600);
+        }
+
+        // Set Theme Color Presets
+        function setTheme(themeName) {
+            document.body.className = themeName;
+            document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.querySelector(`.btn-${themeName.replace('theme-', '')}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            playClickSound();
+        }
+
+        // Initialize Web Audio Context and Media Stream Routing
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioCtx.createAnalyser();
+                analyser.fftSize = 64;
+
+                const bgMusic = document.getElementById('bgMusic');
+                if (bgMusic && !audioSourceNode) {
+                    audioSourceNode = audioCtx.createMediaElementSource(bgMusic);
+                    audioSourceNode.connect(analyser);
+                    analyser.connect(audioCtx.destination);
+                }
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // Audio UI Feedback Click
+        function playClickSound() {
+            if (!audioCtx) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.05);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.05);
+            } catch (e) {}
+        }
+
+        // Toggle Linked Audio Stream Playback
+        function toggleGlobalAudio() {
+            initAudio();
+            const btn = document.getElementById('btnAudioToggle');
+            const spoolLeft = document.getElementById('spoolLeft');
+            const spoolRight = document.getElementById('spoolRight');
+            const bgMusic = document.getElementById('bgMusic');
+
+            if (isAudioPlaying) {
+                isAudioPlaying = false;
+                bgMusic.pause();
+                btn.innerHTML = `<i class="fa-solid fa-play"></i><span>PLAY SYNTH</span>`;
+                if (spoolLeft) spoolLeft.classList.remove('playing');
+                if (spoolRight) spoolRight.classList.remove('playing');
+            } else {
+                isAudioPlaying = true;
+                bgMusic.play().catch(error => {
+                    console.log("Playback error or restriction:", error);
+                });
+                btn.innerHTML = `<i class="fa-solid fa-pause"></i><span>PAUSE SYNTH</span>`;
+                if (spoolLeft) spoolLeft.classList.add('playing');
+                if (spoolRight) spoolRight.classList.add('playing');
+            }
+        }
+
+        // Visualizer Mode Selector
+        function setVisMode(mode) {
+            visMode = mode;
+            document.querySelectorAll('.vis-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            playClickSound();
+        }
+
+        // Language Equalizer Updates
+        function updateEq(lang, val) {
+            document.getElementById(`val-${lang}`).innerText = val + '%';
+        }
+
+        // RESET EQUALIZER TO 0%
+        function resetEqToZero() {
+            const langs = ['c', 'js', 'html', 'css', 'py'];
+            langs.forEach(lang => {
+                const slider = document.getElementById(`slide-${lang}`);
+                const display = document.getElementById(`val-${lang}`);
+                if (slider) slider.value = 0;
+                if (display) display.innerText = '0%';
+            });
+            playClickSound();
+        }
+
+        // UPDATE TRACK 1 INFO FROM EQUALIZER SLIDERS
+        function updateTrackOneInfo() {
+            const cVal = document.getElementById('slide-c').value;
+            const jsVal = document.getElementById('slide-js').value;
+            const htmlVal = document.getElementById('slide-html').value;
+            const cssVal = document.getElementById('slide-css').value;
+            const pyVal = document.getElementById('slide-py').value;
+
+            const highlightsContainer = document.getElementById('track1Highlights');
+            if (highlightsContainer) {
+                highlightsContainer.innerHTML = `
+                    <div class="highlight-item">
+                        <h4>Synchronized C Level</h4>
+                        <p>C Systems Core (${cVal}%)</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h4>Synchronized Web Stack</h4>
+                        <p>JS/HTML/CSS (${jsVal}% / ${htmlVal}% / ${cssVal}%)</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h4>Live EQ Sync</h4>
+                        <p>Python Matrix: ${pyVal}% (Synced)</p>
+                    </div>
+                `;
+            }
+
+            playClickSound();
+            alert('Track 01 profile info updated successfully from Equalizer values!');
+        }
+
+        // Language Soundboard FX Pads
+        function triggerSound(type) {
+            initAudio();
+            const padElement = event.currentTarget;
+            padElement.classList.add('playing');
+            setTimeout(() => padElement.classList.remove('playing'), 200);
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            const frequencies = {
+                'c': 110.00,    // Deep C Bass
+                'js': 440.00,   // Synth Lead A4
+                'html': 523.25, // Chord Chime C5
+                'css': 659.25,  // Sweep E5
+                'py': 880.00    // High Pulse A5
+            };
+
+            osc.type = type === 'c' ? 'triangle' : type === 'js' ? 'sawtooth' : 'sine';
+            osc.frequency.setValueAtTime(frequencies[type] || 300, audioCtx.currentTime);
+
+            gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+
+            osc.connect(gain);
+            gain.connect(analyser || audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.3);
+        }
+
+        // Handle Contact Form Submit
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            playClickSound();
+            alert('Transmission Received! Signal logged in portfolio console.');
+            e.target.reset();
+        }
+
+        // Canvas Visualizer Loop & VU Meter Simulation
+        const canvas = document.getElementById('specCanvas');
+        const ctx = canvas ? canvas.getContext('2d') : null;
+
+        function renderCanvas() {
+            requestAnimationFrame(renderCanvas);
+
+            for (let i = 1; i <= 8; i++) {
+                const vu = document.getElementById(`vu${i}`);
+                if (vu) {
+                    const h = isAudioPlaying ? Math.floor(Math.random() * 80) + 20 : 15;
+                    vu.style.height = h + '%';
+                    vu.style.opacity = isAudioPlaying ? '1' : '0.3';
+                }
+            }
+
+            if (!canvas || !ctx) return;
+
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const primaryColor = getComputedStyle(document.body).getPropertyValue('--primary').trim() || '#00f0ff';
+
+            if (visMode === 'bars') {
+                const barCount = 24;
+                const barWidth = (canvas.width / barCount) - 4;
+                for (let i = 0; i < barCount; i++) {
+                    const barHeight = isAudioPlaying 
+                        ? Math.sin(Date.now() * 0.005 + i) * (canvas.height * 0.35) + (canvas.height * 0.45) 
+                        : 10;
+                    ctx.fillStyle = primaryColor;
+                    ctx.fillRect(i * (barWidth + 4) + 2, canvas.height - barHeight, barWidth, barHeight);
+                }
+            } else if (visMode === 'wave') {
+                ctx.beginPath();
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = primaryColor;
+                const points = 50;
+                for (let i = 0; i <= points; i++) {
+                    const x = (canvas.width / points) * i;
+                    const y = isAudioPlaying
+                    ? (canvas.height / 2) + Math.sin(Date.now() * 0.008 + i * 0.3) * 45
+                    : canvas.height / 2;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            } else if (visMode === 'radial') {
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const radius = isAudioPlaying ? 50 + Math.sin(Date.now() * 0.01) * 15 : 45;
+
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.strokeStyle = primaryColor;
+                ctx.lineWidth = 4;
+                ctx.stroke();
+            }
+        }
+
+        renderCanvas();
+    </script>
+</body>
+</html>
