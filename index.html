@@ -1198,6 +1198,7 @@
     <div class="intro-overlay" id="introOverlay">
         <div class="intro-deck-housing">
             <div class="intro-lcd" id="introLcdText">SYSTEM READY // INSERT CASSETTE</div>
+
             <div class="cassette-tape">
                 <div class="cassette-sticker">
                     <div class="cassette-header">
@@ -1346,11 +1347,21 @@
                     <div class="lcd-status"></div>
                     <div class="lcd-text" id="lcdTrackText">TRK 01 // ABOUT ME LOADED</div>
                 </div>
+                
+                <!-- Grouped container for Volume Slider and Play Synth Button -->
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="display: inline-flex; align-items: center; gap: 8px;">
+                        <span style="font-family: monospace; font-size: 12px; color: inherit;">VOL</span>
+                        <input type="range" id="volumeSlider" min="0" max="1" step="0.05" value="1" 
+                                oninput="document.getElementById('bgMusic').volume = this.value" 
+                                style="cursor: pointer; width: 80px;">
+                    </div>
 
-                <button class="global-audio-btn" id="btnAudioToggle" onclick="toggleGlobalAudio()">
-                    <i class="fa-solid fa-play"></i>
-                    <span>PLAY SYNTH</span>
-                </button>
+                    <button class="global-audio-btn" id="btnAudioToggle" onclick="toggleGlobalAudio()">
+                        <i class="fa-solid fa-play"></i>
+                        <span>PLAY SYNTH</span>
+                    </button>
+                </div>
             </div>
 
             <!-- TRK 01: ABOUT ME -->
@@ -1418,7 +1429,7 @@
                             <div class="cassette-sticker">
                                 <div class="cassette-header">
                                     <span>SIDE A</span>
-                                    <span>STREAM DECK</span>
+                                    <span>K-ON!!!</span>
                                 </div>
                                 <div class="cassette-window">
                                     <div class="cassette-spool" id="spoolLeft">
@@ -1571,6 +1582,7 @@
             </section>
 
             <!-- TRK 05: LANGUAGES -->
+            <!-- TRK 05: LANGUAGES -->
             <section id="page-5" class="page-track">
                 <div class="track-header">
                     <h2>TRK 05 // LANGUAGES</h2>
@@ -1581,31 +1593,31 @@
                     <div class="sound-pad" onclick="triggerSound('c')">
                         <i class="fa-solid fa-c"></i>
                         <span class="pad-title">C PROGRAMMING</span>
-                        <span class="pad-sub">45% USE // LOW FREQ BASS</span>
+                        <span class="pad-sub">LOW FREQ BASS</span>
                     </div>
 
                     <div class="sound-pad" onclick="triggerSound('js')">
                         <i class="fa-brands fa-js"></i>
                         <span class="pad-title">JAVASCRIPT</span>
-                        <span class="pad-sub">25% USE // SYNTH LEAD</span>
+                        <span class="pad-sub">SYNTH LEAD</span>
                     </div>
 
                     <div class="sound-pad" onclick="triggerSound('html')">
                         <i class="fa-brands fa-html5"></i>
                         <span class="pad-title">HTML5</span>
-                        <span class="pad-sub">15% USE // CHORD CHIME</span>
+                        <span class="pad-sub">CHORD CHIME</span>
                     </div>
 
                     <div class="sound-pad" onclick="triggerSound('css')">
                         <i class="fa-brands fa-css3-alt"></i>
                         <span class="pad-title">CSS3</span>
-                        <span class="pad-sub">10% USE // SWEEP FILTER</span>
+                        <span class="pad-sub">SWEEP FILTER</span>
                     </div>
 
                     <div class="sound-pad" onclick="triggerSound('py')" style="grid-column: span 2;">
                         <i class="fa-brands fa-python"></i>
                         <span class="pad-title">PYTHON</span>
-                        <span class="pad-sub">5% USE // HIGH BEAT PULSE</span>
+                        <span class="pad-sub">HIGH BEAT PULSE</span>
                     </div>
                 </div>
             </section>
