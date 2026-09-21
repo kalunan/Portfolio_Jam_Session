@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Media Player Portfolio</title>
-    <!-- Google Fonts & FontAwesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            /* Theme Variables - Default: Cyber Neon (#00f0ff) */
             --bg-base: #090912;
             --bg-panel: #121225;
             --bg-card: #1a1a38;
@@ -26,7 +24,6 @@
             --font-code: 'Fira Code', monospace;
         }
 
-        /* Color Preset Classes */
         body.theme-neon {
             --bg-base: #090912;
             --bg-panel: #121225;
@@ -110,7 +107,6 @@
             transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        /* Intro Cassette Animation Overlay */
         .intro-overlay {
             position: fixed;
             top: 0;
@@ -133,7 +129,6 @@
             pointer-events: none;
         }
 
-        /* Track Transition Cassette Overlay */
         .track-transition-overlay {
             position: fixed;
             top: 0;
@@ -210,7 +205,6 @@
             transform: translateY(-2px);
         }
 
-        /* App Container & Landing Page Fade-In Entrance Animation */
         .app-container {
             display: flex;
             width: 100vw;
@@ -225,7 +219,6 @@
             transform: scale(1) translateY(0);
         }
 
-        /* Sidebar Navigation Deck */
         .sidebar-deck {
             width: 280px;
             background-color: var(--bg-panel);
@@ -274,7 +267,6 @@
             text-transform: uppercase;
         }
 
-        /* Track Menu List */
         .nav-menu {
             list-style: none;
             margin: 25px 0;
@@ -340,7 +332,6 @@
             color: var(--primary);
         }
 
-        /* Sidebar Hardware Controls */
         .sidebar-controls {
             border-top: 1px solid var(--border-color);
             padding-top: 20px;
@@ -412,7 +403,6 @@
             transition: height 0.1s ease, opacity 0.1s ease;
         }
 
-        /* Main Content Viewport */
         .main-viewport {
             flex-grow: 1;
             display: flex;
@@ -422,7 +412,6 @@
             background: radial-gradient(circle at top right, var(--bg-panel), var(--bg-base));
         }
 
-        /* Top Display Bar */
         .top-display-bar {
             padding: 15px 30px;
             background-color: rgba(18, 18, 37, 0.85);
@@ -489,7 +478,6 @@
             box-shadow: 0 0 15px var(--primary-glow);
         }
 
-        /* Page Track Views */
         .page-track {
             display: none;
             padding: 35px 40px;
@@ -528,7 +516,6 @@
             font-size: 1rem;
         }
 
-        /* TRK 01: About Me Styles */
         .about-card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -609,7 +596,6 @@
             color: var(--text-main);
         }
 
-        /* TRK 02: Player & Visualizer */
         .player-console {
             display: grid;
             grid-template-columns: 1fr 340px;
@@ -670,7 +656,6 @@
             color: var(--bg-base);
         }
 
-        /* Cassette Tape Deck Components */
         .turntable-card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -816,7 +801,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        /* TRK 03: Expanded Vertical Equalizer Page */
         .page-track#page-3 {
             max-width: 100%;
             padding: 35px 50px;
@@ -937,7 +921,6 @@
             transform: translateY(-2px);
         }
 
-        /* TRK 04: Projects Grid (Expanded & Filled Layout) */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -1018,7 +1001,6 @@
             opacity: 0.9;
         }
 
-        /* TRK 05: Languages Soundboard */
         .soundboard-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -1088,7 +1070,6 @@
             text-align: center;
         }
 
-        /* TRK 06: Contact Form */
         .contact-card {
             background-color: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -1212,14 +1193,11 @@
 </head>
 <body class="theme-neon">
 
-    <!-- Linked Background Audio Element -->
     <audio id="bgMusic" src="Synthesis.mp3" preload="auto" crossorigin="anonymous" loop></audio>
 
-    <!-- Intro Cassette Player Animation Overlay -->
     <div class="intro-overlay" id="introOverlay">
         <div class="intro-deck-housing">
             <div class="intro-lcd" id="introLcdText">SYSTEM READY // INSERT CASSETTE</div>
-            <!-- Cassette Tape Graphic -->
             <div class="cassette-tape">
                 <div class="cassette-sticker">
                     <div class="cassette-header">
@@ -1257,7 +1235,6 @@
         </div>
     </div>
 
-    <!-- Track Transition Cassette Player Overlay -->
     <div class="track-transition-overlay" id="trackTransitionOverlay">
         <div class="intro-deck-housing">
             <div class="intro-lcd" id="transitionLcdText">LOADING TRACK...</div>
@@ -1289,7 +1266,6 @@
     </div>
 
     <div class="app-container" id="appContainer">
-        <!-- Sidebar Navigation Rack Deck -->
         <aside class="sidebar-deck">
             <div>
                 <div class="brand-header">
@@ -1364,9 +1340,7 @@
             </div>
         </aside>
 
-        <!-- Main Content Viewport -->
         <main class="main-viewport">
-            <!-- Top Status Display Bar -->
             <div class="top-display-bar">
                 <div class="lcd-screen">
                     <div class="lcd-status"></div>
@@ -1388,7 +1362,6 @@
 
                 <div class="about-card">
                     <div class="cassette-sleeve">
-                        <!-- Profile Picture -->
                         <img src="IMG_5175.png" alt="Profile Picture" class="profile-pic">
                         <div>
                             <h3 style="font-family: var(--font-display); font-size: 1.1rem; color: var(--primary);">Keith Alunan</h3>
@@ -1441,7 +1414,6 @@
                     </div>
 
                     <div class="turntable-card">
-                        <!-- Cassette Tape Display -->
                         <div class="cassette-tape">
                             <div class="cassette-sticker">
                                 <div class="cassette-header">
@@ -1481,7 +1453,6 @@
 
                 <div class="eq-panel">
                     <div class="eq-channels-container">
-                        <!-- C Channel -->
                         <div class="eq-channel-col">
                             <span class="eq-label">C</span>
                             <div class="eq-slider-wrapper">
@@ -1490,7 +1461,6 @@
                             <span class="eq-value" id="val-c">45%</span>
                         </div>
 
-                        <!-- JS Channel -->
                         <div class="eq-channel-col">
                             <span class="eq-label">JS</span>
                             <div class="eq-slider-wrapper">
@@ -1499,7 +1469,6 @@
                             <span class="eq-value" id="val-js">25%</span>
                         </div>
 
-                        <!-- HTML Channel -->
                         <div class="eq-channel-col">
                             <span class="eq-label">HTML</span>
                             <div class="eq-slider-wrapper">
@@ -1508,7 +1477,6 @@
                             <span class="eq-value" id="val-html">15%</span>
                         </div>
 
-                        <!-- CSS Channel -->
                         <div class="eq-channel-col">
                             <span class="eq-label">CSS</span>
                             <div class="eq-slider-wrapper">
@@ -1517,7 +1485,6 @@
                             <span class="eq-value" id="val-css">10%</span>
                         </div>
 
-                        <!-- Python Channel -->
                         <div class="eq-channel-col">
                             <span class="eq-label">PYTHON</span>
                             <div class="eq-slider-wrapper">
@@ -1534,7 +1501,6 @@
                 </div>
             </section>
 
-            <!-- TRK 04: PROJECTS -->
             <section id="page-4" class="page-track">
                 <div class="track-header">
                     <h2>TRK 04 // PROJECTS</h2>
@@ -1672,9 +1638,7 @@
         </main>
     </div>
 
-    <!-- Web Audio API & Interactive Logic -->
     <script>
-        // Track Display Map
         const trackNames = {
             'page-1': 'TRK 01 // ABOUT ME LOADED',
             'page-2': 'TRK 02 // PLAYER & VISUALIZER ACTIVE',
@@ -1700,7 +1664,6 @@
         let visMode = 'bars';
         let analyser = null;
 
-        // Intro Animation Sequence Logic
         let introPlaying = false;
         let introInterval = null;
 
@@ -1760,7 +1723,6 @@
             playClickSound();
         }
 
-        // Switch Page Tracks with Cassette Transition Animation
         function switchTrack(pageId) {
             if (activeTrack === pageId) return;
 
@@ -1809,7 +1771,6 @@
             }, 600);
         }
 
-        // Set Theme Color Presets
         function setTheme(themeName) {
             document.body.className = themeName;
             document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
@@ -1837,7 +1798,6 @@
             }
         }
 
-        // Audio UI Feedback Click
         function playClickSound() {
             if (!audioCtx) return;
             try {
@@ -1855,7 +1815,6 @@
             } catch (e) {}
         }
 
-        // Toggle Linked Audio Stream Playback
         function toggleGlobalAudio() {
             initAudio();
             const btn = document.getElementById('btnAudioToggle');
@@ -1880,7 +1839,6 @@
             }
         }
 
-        // Visualizer Mode Selector
         function setVisMode(mode) {
             visMode = mode;
             document.querySelectorAll('.vis-btn').forEach(b => b.classList.remove('active'));
@@ -1888,12 +1846,10 @@
             playClickSound();
         }
 
-        // Language Equalizer Updates
         function updateEq(lang, val) {
             document.getElementById(`val-${lang}`).innerText = val + '%';
         }
 
-        // RESET EQUALIZER TO 0%
         function resetEqToZero() {
             const langs = ['c', 'js', 'html', 'css', 'py'];
             langs.forEach(lang => {
@@ -1905,7 +1861,6 @@
             playClickSound();
         }
 
-        // UPDATE TRACK 1 INFO FROM EQUALIZER SLIDERS
         function updateTrackOneInfo() {
             const cVal = document.getElementById('slide-c').value;
             const jsVal = document.getElementById('slide-js').value;
@@ -1935,7 +1890,6 @@
             alert('Track 01 profile info updated successfully from Equalizer values!');
         }
 
-        // Language Soundboard FX Pads
         function triggerSound(type) {
             initAudio();
             const padElement = event.currentTarget;
@@ -1946,11 +1900,11 @@
             const gain = audioCtx.createGain();
 
             const frequencies = {
-                'c': 110.00,    // Deep C Bass
-                'js': 440.00,   // Synth Lead A4
-                'html': 523.25, // Chord Chime C5
-                'css': 659.25,  // Sweep E5
-                'py': 880.00    // High Pulse A5
+                'c': 110.00,    
+                'js': 440.00,   
+                'html': 523.25, 
+                'css': 659.25,  
+                'py': 880.00    
             };
 
             osc.type = type === 'c' ? 'triangle' : type === 'js' ? 'sawtooth' : 'sine';
@@ -1965,7 +1919,6 @@
             osc.stop(audioCtx.currentTime + 0.3);
         }
 
-        // Handle Contact Form Submit
         function handleContactSubmit(e) {
             e.preventDefault();
             playClickSound();
@@ -1973,7 +1926,6 @@
             e.target.reset();
         }
 
-        // Canvas Visualizer Loop & VU Meter Simulation
         const canvas = document.getElementById('specCanvas');
         const ctx = canvas ? canvas.getContext('2d') : null;
 
